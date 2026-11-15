@@ -1,0 +1,6 @@
+Vosk model: vosk-model-small-en-us-0.15
+Source: https://alphacephei.com/vosk/models
+Copyright 2020 Alpha Cephei Inc.
+
+The model is distributed under the Apache License, Version 2.0.
+See LICENSE-APACHE-2.0 in this directory for the license text.

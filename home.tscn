@@ -1,0 +1,178 @@
+[gd_scene load_steps=4 format=3]
+
+[ext_resource type="Script" path="res://home.gd" id="1_home"]
+[ext_resource type="Script" path="res://vad_wake_listener.gd" id="2_vad"]
+[ext_resource type="Script" path="res://vosk_stt_bridge.gd" id="3_vosk"]
+
+[node name="Home" type="Control"]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+script = ExtResource("1_home")
+
+[node name="VadWakeListener" type="Node" parent="."]
+script = ExtResource("2_vad")
+
+[node name="VoskSttBridge" type="Node" parent="."]
+script = ExtResource("3_vosk")
+
+[node name="Welcome" type="Label" parent="."]
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -220.0
+offset_top = -270.0
+offset_right = 220.0
+offset_bottom = -230.0
+grow_horizontal = 2
+grow_vertical = 2
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="Logout" type="Button" parent="."]
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -80.0
+offset_top = 220.0
+offset_right = 80.0
+offset_bottom = 260.0
+grow_horizontal = 2
+grow_vertical = 2
+text = "Log out"
+
+[node name="WakeStatus" type="Label" parent="."]
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -280.0
+offset_top = 270.0
+offset_right = 280.0
+offset_bottom = 310.0
+grow_horizontal = 2
+grow_vertical = 2
+text = "Starting microphone..."
+horizontal_alignment = 1
+vertical_alignment = 1
+autowrap_mode = 2
+
+[node name="ChatPanel" type="PanelContainer" parent="."]
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -300.0
+offset_top = -225.0
+offset_right = 300.0
+offset_bottom = 205.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="ChatLayout" type="VBoxContainer" parent="ChatPanel"]
+layout_mode = 2
+theme_override_constants/separation = 8
+
+[node name="ChatTitle" type="Label" parent="ChatPanel/ChatLayout"]
+layout_mode = 2
+text = "Chat with Anna"
+horizontal_alignment = 1
+
+[node name="MessageScroll" type="ScrollContainer" parent="ChatPanel/ChatLayout"]
+custom_minimum_size = Vector2(0, 330)
+layout_mode = 2
+size_flags_vertical = 3
+horizontal_scroll_mode = 0
+
+[node name="Messages" type="VBoxContainer" parent="ChatPanel/ChatLayout/MessageScroll"]
+layout_mode = 2
+size_flags_horizontal = 3
+theme_override_constants/separation = 6
+
+[node name="Composer" type="HBoxContainer" parent="ChatPanel/ChatLayout"]
+layout_mode = 2
+
+[node name="Input" type="LineEdit" parent="ChatPanel/ChatLayout/Composer"]
+layout_mode = 2
+size_flags_horizontal = 3
+placeholder_text = "Type a message..."
+
+[node name="Send" type="Button" parent="ChatPanel/ChatLayout/Composer"]
+layout_mode = 2
+text = "Send"
+
+[node name="Voice" type="Button" parent="ChatPanel/ChatLayout"]
+layout_mode = 2
+text = "Start voice input"
+
+[node name="VoiceStatus" type="Label" parent="ChatPanel/ChatLayout"]
+layout_mode = 2
+text = "Voice input is Android/Vosk-only."
+autowrap_mode = 2
+
+[node name="DevicesPanel" type="PanelContainer" parent="."]
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = 315.0
+offset_top = -225.0
+offset_right = 625.0
+offset_bottom = 205.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="DevicesLayout" type="VBoxContainer" parent="DevicesPanel"]
+layout_mode = 2
+theme_override_constants/separation = 6
+
+[node name="Title" type="Label" parent="DevicesPanel/DevicesLayout"]
+layout_mode = 2
+text = "LAN devices"
+horizontal_alignment = 1
+
+[node name="Host" type="Button" parent="DevicesPanel/DevicesLayout"]
+layout_mode = 2
+text = "Host on LAN"
+
+[node name="Address" type="LineEdit" parent="DevicesPanel/DevicesLayout"]
+layout_mode = 2
+placeholder_text = "Host IP (for client)"
+text = "127.0.0.1"
+
+[node name="Connect" type="Button" parent="DevicesPanel/DevicesLayout"]
+layout_mode = 2
+text = "Connect to host"
+
+[node name="List" type="ItemList" parent="DevicesPanel/DevicesLayout"]
+custom_minimum_size = Vector2(0, 130)
+layout_mode = 2
+size_flags_vertical = 3
+
+[node name="Command" type="Button" parent="DevicesPanel/DevicesLayout"]
+layout_mode = 2
+text = "Send command to selected"
+
+[node name="Handoff" type="Button" parent="DevicesPanel/DevicesLayout"]
+layout_mode = 2
+text = "Switch to selected device"
+
+[node name="Status" type="Label" parent="DevicesPanel/DevicesLayout"]
+layout_mode = 2
+text = "LAN: offline"
+autowrap_mode = 2
