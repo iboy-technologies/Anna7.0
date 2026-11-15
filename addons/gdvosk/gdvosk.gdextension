@@ -1,0 +1,15 @@
+[configuration]
+entry_symbol = "gdvosk_library_init"
+compatibility_minimum = 4.5
+
+[icons]
+SpeechRecognizer = "res://addons/gdvosk/icons/SpeechRecognizer.svg"
+
+[libraries]
+android.debug.arm32 = "res://addons/gdvosk/lib/android/arm32/libgdvosk-d.so"
+android.release.arm32 = "res://addons/gdvosk/lib/android/arm32/libgdvosk.so"
+android.debug.arm64 = "res://addons/gdvosk/lib/android/arm64/libgdvosk-d.so"
+android.release.arm64 = "res://addons/gdvosk/lib/android/arm64/libgdvosk.so"
+
+windows.release.x86_64 = "res://addons/gdvosk/lib/windows/x86_64/libgdvosk.dll"
+windows.debug.x86_64 = "res://addons/gdvosk/lib/windows/x86_64/libgdvosk-d.dll"

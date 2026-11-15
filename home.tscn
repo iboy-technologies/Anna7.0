@@ -2,7 +2,7 @@
 
 [ext_resource type="Script" path="res://home.gd" id="1_home"]
 [ext_resource type="Script" path="res://vad_wake_listener.gd" id="2_vad"]
-[ext_resource type="Script" path="res://vosk_stt_bridge.gd" id="3_vosk"]
+[ext_resource type="Script" path="res://gdvosk_speech_recognizer.gd" id="3_gdvosk"]
 
 [node name="Home" type="Control"]
 layout_mode = 3
@@ -16,8 +16,8 @@ script = ExtResource("1_home")
 [node name="VadWakeListener" type="Node" parent="."]
 script = ExtResource("2_vad")
 
-[node name="VoskSttBridge" type="Node" parent="."]
-script = ExtResource("3_vosk")
+[node name="GdVoskSpeechRecognizer" type="Node" parent="."]
+script = ExtResource("3_gdvosk")
 
 [node name="Welcome" type="Label" parent="."]
 layout_mode = 1
@@ -120,7 +120,7 @@ text = "Start voice input"
 
 [node name="VoiceStatus" type="Label" parent="ChatPanel/ChatLayout"]
 layout_mode = 2
-text = "Voice input is Android/Vosk-only."
+text = "Voice input uses gdvosk when its native library and VoskModel are installed."
 autowrap_mode = 2
 
 [node name="DevicesPanel" type="PanelContainer" parent="."]
