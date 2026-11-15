@@ -28,3 +28,9 @@ The plugin manifest declares `android.permission.RECORD_AUDIO`. The app must tar
 - `error(message)` signal
 
 The project and native plugin request `android.permission.RECORD_AUDIO` before starting. The Java worker emits partial and final results while capturing audio, and releases `AudioRecord`, `Recognizer`, and `Model` on stop or app shutdown. Final transcripts are forwarded into the existing chat as user messages and receive the normal local Anna response.
+
+## Windows desktop build
+
+Windows uses the GDExtension in `windows/vosk_stt/`. It captures microphone PCM through Godot's `AudioStreamMicrophone`/`AudioEffectCapture` path and sends 16 kHz mono samples to the native Vosk recognizer. Build requirements are a matching Godot 4 `godot-cpp` checkout, the Vosk native SDK headers/library, and a C++17 Windows toolchain. Configure CMake with `-DGODOT_CPP_DIR=... -DVOSK_SDK_DIR=...`, then copy the resulting DLL and Vosk runtime DLL beside the exported executable at the path declared in `windows/vosk_stt/vosk_stt.gdextension`.
+
+Windows reuses the committed model at `android/app/src/main/assets/vosk-model-small-en-us`; ensure that directory is included in the desktop export or update the path in `vosk_stt_bridge.gd`. If the DLL is absent, the UI remains usable and reports that native Vosk is unavailable.
