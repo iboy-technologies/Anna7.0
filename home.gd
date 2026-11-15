@@ -6,7 +6,7 @@ const LAN_PORT := 24567
 
 @onready var wake_status: Label = $WakeStatus
 @onready var vad_listener: VadWakeListener = $VadWakeListener
-@onready var vosk_bridge: VoskSttBridge = $VoskSttBridge
+@onready var voice_recognizer: GdVoskSpeechRecognizer = $GdVoskSpeechRecognizer
 @onready var message_input: LineEdit = $ChatPanel/ChatLayout/Composer/Input
 @onready var messages: VBoxContainer = $ChatPanel/ChatLayout/MessageScroll/Messages
 @onready var device_list: ItemList = $DevicesPanel/DevicesLayout/List
@@ -24,9 +24,9 @@ func _ready() -> void:
 	$ChatPanel/ChatLayout/Composer/Send.pressed.connect(_send_message)
 	message_input.text_submitted.connect(_on_message_submitted)
 	$ChatPanel/ChatLayout/Voice.pressed.connect(_toggle_voice_input)
-	vosk_bridge.status_changed.connect(_on_voice_status_changed)
-	vosk_bridge.error_occurred.connect(_on_voice_error)
-	vosk_bridge.final_transcript.connect(_on_voice_transcript)
+	voice_recognizer.status_changed.connect(_on_voice_status_changed)
+	voice_recognizer.error_occurred.connect(_on_voice_error)
+	voice_recognizer.final_transcript.connect(_on_voice_transcript)
 	_add_message("Hi! I’m Anna. How can I help?", false)
 	$DevicesPanel/DevicesLayout/Host.pressed.connect(_host_lan)
 	$DevicesPanel/DevicesLayout/Connect.pressed.connect(_connect_lan)
@@ -64,12 +64,12 @@ func _send_message() -> void:
 	_conversation.append({"text": "I received your message: \"%s\"" % text, "from_user": false})
 
 func _toggle_voice_input() -> void:
-	if vosk_bridge.is_listening():
-		vosk_bridge.stop_listening()
+	if voice_recognizer.is_listening():
+		voice_recognizer.stop_listening()
 		$ChatPanel/ChatLayout/Voice.text = "Start voice input"
 	else:
-		vosk_bridge.start_listening()
-		$ChatPanel/ChatLayout/Voice.text = "Stop voice input"
+		voice_recognizer.start_listening()
+		$ChatPanel/ChatLayout/Voice.text = "Stop voice input" if voice_recognizer.is_listening() else "Start voice input"
 
 func _on_voice_status_changed(status: String) -> void:
 	$ChatPanel/ChatLayout/VoiceStatus.text = status
