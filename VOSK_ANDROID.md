@@ -1,6 +1,6 @@
 # Offline Vosk speech-to-text on Android
 
-The Godot project contains a small bridge (`vosk_stt_bridge.gd`) and an Android plugin contract under `android/plugins/vosk_stt/`. The bridge remains safe on desktop/editor builds and reports when the native plugin is unavailable.
+The Godot project contains a bridge (`vosk_stt_bridge.gd`) and a native Android plugin under `android/plugins/vosk_stt/`. The bridge remains safe on desktop/editor builds and reports when the native plugin is unavailable.
 
 ## Model setup
 
@@ -10,11 +10,15 @@ The official small English model is bundled in this repository under:
 
 It is the `vosk-model-small-en-us-0.15` model from the official Vosk models page. Its Apache 2.0 attribution is preserved in the model directory's `NOTICE` and `LICENSE-APACHE-2.0` files.
 
-The Android plugin should load that directory and feed 16 kHz, mono PCM from `AudioRecord` into the Vosk recognizer.
+The Android plugin copies that asset tree into the app's private files directory on first use and feeds 16 kHz, mono PCM from `AudioRecord` into the Vosk recognizer.
 
-## Native plugin contract
+## Android build/export requirements
 
-Register a Godot Android singleton named `VoskStt` with:
+Build `android/plugins/vosk_stt` as an Android library and include it in the Godot Android export template. Its `build.gradle` depends on `com.alphacephei:vosk-android:0.3.45`; the export must have Maven Central access. The plugin class is `org.annasoftware.vosk.VoskSttPlugin` and registers the singleton named `VoskStt`.
+
+The plugin manifest declares `android.permission.RECORD_AUDIO`. The app must target Android API 24 or newer. The model directory must be packaged into the exported APK at `assets/vosk-model-small-en-us/`; do not rename or flatten its files.
+
+## Native plugin API
 
 - `start_listening(model_path)`
 - `stop_listening()`
@@ -23,4 +27,4 @@ Register a Godot Android singleton named `VoskStt` with:
 - `status_changed(status)` signal
 - `error(message)` signal
 
-The project requests `android.permission.RECORD_AUDIO` before starting. Final transcripts are forwarded into the existing chat as user messages and receive the normal local Anna response.
+The project and native plugin request `android.permission.RECORD_AUDIO` before starting. The Java worker emits partial and final results while capturing audio, and releases `AudioRecord`, `Recognizer`, and `Model` on stop or app shutdown. Final transcripts are forwarded into the existing chat as user messages and receive the normal local Anna response.

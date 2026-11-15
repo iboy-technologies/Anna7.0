@@ -7,7 +7,7 @@ signal status_changed(status: String)
 signal error_occurred(message: String)
 
 const PLUGIN_NAME := "VoskStt"
-const MODEL_HINT := "Place a small English Vosk model at android/app/src/main/assets/vosk-model-small-en-us."
+const MODEL_HINT := "vosk-model-small-en-us"
 
 var _plugin: Object
 var _listening := false
@@ -25,7 +25,7 @@ func _ready() -> void:
 		_plugin.status_changed.connect(_on_plugin_status)
 	if _plugin.has_signal("error"):
 		_plugin.error.connect(_on_plugin_error)
-	status_changed.emit("Vosk ready. Model path: %s" % MODEL_HINT)
+	status_changed.emit("Vosk ready. Bundled model: %s" % MODEL_HINT)
 
 func start_listening() -> void:
 	if _plugin == null:

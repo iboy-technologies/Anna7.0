@@ -1,7 +1,5 @@
 extends Object
 
-# Native implementation contract:
-# - Expose a VoskStt singleton with start_listening(model_path) and stop_listening().
-# - Emit partial_transcript(text), final_transcript(text), status_changed(status), and error(message).
-# - Capture 16 kHz mono PCM with Android AudioRecord and feed Vosk Recognizer.
-# See VOSK_ANDROID.md for the model and Android build integration steps.
+# The Android implementation is VoskSttPlugin.java in this directory's
+# src/main/java tree. This file remains as a Godot-side plugin manifest
+# companion for editor tooling.
