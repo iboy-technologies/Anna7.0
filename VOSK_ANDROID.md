@@ -31,6 +31,15 @@ The project and native plugin request `android.permission.RECORD_AUDIO` before s
 
 ## Windows desktop build
 
-Windows uses the GDExtension in `windows/vosk_stt/`. It captures microphone PCM through Godot's `AudioStreamMicrophone`/`AudioEffectCapture` path and sends 16 kHz mono samples to the native Vosk recognizer. Build requirements are a matching Godot 4 `godot-cpp` checkout, the Vosk native SDK headers/library, and a C++17 Windows toolchain. Configure CMake with `-DGODOT_CPP_DIR=... -DVOSK_SDK_DIR=...`, then copy the resulting DLL and Vosk runtime DLL beside the exported executable at the path declared in `windows/vosk_stt/vosk_stt.gdextension`.
+Windows uses the GDExtension in `windows/vosk_stt/`. It captures microphone PCM through Godot's `AudioStreamMicrophone`/`AudioEffectCapture` path and sends 16 kHz mono samples to the native Vosk recognizer. Build requirements are a `godot-cpp` checkout from the same Godot 4.7 ABI as this project, the Vosk native SDK headers/library, and a C++17 Windows toolchain. Configure and build from the repository root:
+
+```powershell
+cmake -S windows/vosk_stt -B windows/vosk_stt/build `
+  -DGODOT_CPP_DIR=C:\path\to\godot-cpp `
+  -DVOSK_SDK_DIR=C:\path\to\vosk-sdk
+cmake --build windows/vosk_stt/build --config Release
+```
+
+The CMake target writes `windows/vosk_stt/bin/vosk_stt.windows.x86_64.dll`, matching the `entry_symbol` and library path in `windows/vosk_stt/vosk_stt.gdextension`. Copy the Vosk runtime DLL beside that extension DLL and beside the exported executable as required by the Vosk SDK. The native entry point is exported as `vosk_stt_library_init`; do not rename it without changing `entry_symbol` too.
 
 Windows reuses the committed model at `android/app/src/main/assets/vosk-model-small-en-us`; ensure that directory is included in the desktop export or update the path in `vosk_stt_bridge.gd`. If the DLL is absent, the UI remains usable and reports that native Vosk is unavailable.
